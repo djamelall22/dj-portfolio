@@ -278,3 +278,17 @@ function setLang(l) {
   ah.style.fontSize =
     l === "ja" ? "clamp(1.8rem,4vw,3.5rem)" : "clamp(2.5rem,5vw,5rem)";
 }
+
+function toggleSound() {
+  const video = document.getElementById("about-video");
+  const waves = document.getElementById("sound-waves");
+  video.muted = !video.muted;
+  if (video.muted) {
+    waves.setAttribute("d", "M23 9l-6 6M17 9l6 6"); // X sur les ondes
+  } else {
+    waves.setAttribute(
+      "d",
+      "M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14",
+    );
+  }
+}
