@@ -113,19 +113,23 @@
               animation meaningful, every interface tells a story.
             </p>
             <div class="a-tags">
-              <span class="tag">React</span><span class="tag">GSAP</span
-              ><span class="tag">Three.js</span> <span class="tag">3ds Max</span
-              ><span class="tag">Figma</span><span class="tag">WebGL</span>
+              <span class="tag">React</span><span class="tag">GSAP</span>
+              <span class="tag">Three.js</span><span class="tag">3ds Max</span>
+              <span class="tag">Figma</span><span class="tag">WebGL</span>
               <span class="tag">CSS / Sass</span
-              ><span class="tag">Illustrator</span
-              ><span class="tag">Photoshop</span>
+              ><span class="tag">Illustrator</span>
+              <span class="tag">Photoshop</span>
             </div>
           </div>
+
           <div class="a-visual reveal">
             <div class="a-box ab1">
-              <img
-                src="images/dem.png"
-                alt="Djamel"
+              <video
+                id="about-video"
+                autoplay
+                muted
+                loop
+                playsinline
                 style="
                   width: 100%;
                   height: 100%;
@@ -133,7 +137,34 @@
                   object-position: center;
                   display: block;
                 "
-              />
+              >
+                <source src="videos/dem.mp4" type="video/mp4" />
+              </video>
+
+              <button
+                id="sound-btn"
+                onclick="toggleSound()"
+                style="
+                  position: absolute;
+                  top: 12px;
+                  left: 12px;
+                  background: rgba(0, 0, 0, 0.5);
+                  border: none;
+                  color: white;
+                  width: 36px;
+                  height: 36px;
+                  border-radius: 50%;
+                  cursor: none;
+                  font-size: 16px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  z-index: 10;
+                "
+              >
+                🔇
+              </button>
+
               <div
                 style="
                   position: absolute;
@@ -147,12 +178,43 @@
                 "
               ></div>
             </div>
+            <!-- Badge ICI, hors de ab1 -->
+            <div class="a-badge">
+              <svg class="a-badge-ring" viewBox="0 0 120 120">
+                <defs>
+                  <path
+                    id="circle-path"
+                    d="M 60,60 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                  />
+                </defs>
+                <text
+                  font-family="'DM Mono', monospace"
+                  font-size="10.5"
+                  fill="currentColor"
+                  letter-spacing="3"
+                >
+                  <textPath href="#circle-path">
+                    FRONTEND · 3D · DESIGN · ALGERIA ·
+                  </textPath>
+                </text>
+              </svg>
+              <span class="a-badge-icon">↗</span>
+            </div>
             <div class="a-box ab2"></div>
             <div class="a-box ab3">フロントエンド 3D デザイン</div>
           </div>
         </div>
       </div>
     </section>
+
+    <script>
+      function toggleSound() {
+        const video = document.getElementById("about-video");
+        const btn = document.getElementById("sound-btn");
+        video.muted = !video.muted;
+        btn.textContent = video.muted ? "🔇" : "🔊";
+      }
+    </script>
     <section id="skills" class="section-wrap">
       <div>
         <div class="sec-head reveal">
