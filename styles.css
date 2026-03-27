@@ -522,16 +522,6 @@ body::before {
   justify-content: center;
 }
 
-/* SUPPRIMER CES DEUX BLOCS */
-/* .a-visual {
-  overflow: hidden;
-}
-
-.a-box.ab1 {
-  overflow: hidden;
-  position: relative;
-} */
-
 .ab2 {
   bottom: 2%;
   right: 20%;
@@ -816,6 +806,49 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
+.a-badge {
+  position: absolute;
+  top: -6%;
+  right: calc(100% - 58% - 22px);
+
+  width: 125px;
+  height: 125px;
+  border: 1px solid rgba(240, 236, 227, 0.35);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(2px);
+  background: rgba(230, 161, 2, 0.06);
+}
+
+.a-badge-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: rgba(0, 0, 0, 0.6);
+  animation: badge-spin 10s linear infinite;
+}
+
+.a-badge-icon {
+  font-size: 1.1rem;
+  color: rgba(240, 236, 227, 0.85);
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes badge-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .nav-links,
@@ -866,18 +899,8 @@ footer {
   .footer-ja {
     display: none;
   }
-
-  .a-badge {
-    width: 100px;
-    height: 100px;
-    top: auto;
-    bottom: -50px;
-    right: 16px;
-    left: auto;
-  }
-
-  .a-badge-icon {
-    font-size: 0.95rem;
+  .a-visual {
+    position: relative;
   }
 }
 @media (max-width: 580px) {
@@ -902,9 +925,9 @@ footer {
   #about {
     padding-top: 5.5rem;
   }
-  .a-visual {
+  /* .a-visual {
     height: 260px;
-  }
+  } */
   .ab1 {
     left: 20%;
     width: 50%;
@@ -924,10 +947,10 @@ footer {
   }
 
   .a-badge {
-    width: 80px;
-    height: 80px;
-    bottom: -40px;
-    right: 12px;
+    width: 90px;
+    height: 90px;
+    top: -30px;
+    right: 15%;
   }
 
   .a-badge-icon {
@@ -961,47 +984,5 @@ footer {
   .lang-sw button {
     padding: 0.25rem 0.5rem;
     font-size: 0.55rem;
-  }
-}
-
-.a-badge {
-  position: absolute;
-  top: -6%;
-  right: calc(100% - 58% - 22px);
-
-  width: 125px;
-  height: 125px;
-  border: 1px solid rgba(240, 236, 227, 0.35);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  backdrop-filter: blur(2px);
-  background: rgba(230, 161, 2, 0.06);
-}
-
-.a-badge-ring {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  color: rgba(0, 0, 0, 0.6);
-  animation: badge-spin 10s linear infinite;
-}
-
-.a-badge-icon {
-  font-size: 1.1rem;
-  color: rgba(240, 236, 227, 0.85);
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes badge-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
   }
 }
