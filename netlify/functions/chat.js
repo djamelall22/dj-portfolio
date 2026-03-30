@@ -31,6 +31,7 @@ exports.handler = async function (event) {
     );
 
     const data = await response.json();
+    console.log("Gemini response:", JSON.stringify(data));
 
     const reply =
       data?.candidates?.[0]?.content?.parts?.[0]?.text ||
