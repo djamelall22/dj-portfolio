@@ -323,13 +323,11 @@ Your behavior:
     showTyping();
 
     try {
-      // ✅ Calls your Netlify Function — API key stays secret on the server
+      // ✅ Calls Netlify Function → Gemini API (free, key stays secret)
       const res = await fetch("/.netlify/functions/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
           system: SYSTEM_PROMPT,
           messages: history,
         }),
@@ -337,8 +335,7 @@ Your behavior:
 
       const data = await res.json();
       const reply =
-        data.content?.map((b) => b.text || "").join("") ||
-        "Sorry, I couldn't get a response. Please try again.";
+        data.reply || "Sorry, I couldn't get a response. Please try again.";
 
       hideTyping();
       addMessage("bot", reply);
