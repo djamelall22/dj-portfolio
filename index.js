@@ -4,7 +4,6 @@
   const icon = document.getElementById("play-icon");
   if (!video || !btn) return;
 
-  // Déclenche quand .ab1 est visible au scroll
   const observer = new IntersectionObserver(
     ([entry]) => {
       if (entry.isIntersecting) {
@@ -16,19 +15,18 @@
   );
   observer.observe(video.closest(".ab1"));
 
-  // Clic = play avec son + cache le bouton
   btn.addEventListener("click", () => {
     video.muted = false;
     video.play();
     icon.classList.add("hidden");
   });
 
-  // Si la vidéo se termine, réaffiche le bouton play
   video.addEventListener("ended", () => {
     icon.classList.remove("hidden");
   });
 })();
-/* ── LOADER (CSS-only, no GSAP needed) ──────────────── */
+
+/* ── LOADER ─────────────────────────────────────────── */
 const ldBar = document.getElementById("ldBar");
 const ldPct = document.getElementById("ldPct");
 const loader = document.getElementById("loader");
@@ -181,6 +179,12 @@ const T = {
     "pr-d4":
       "Polish, test, iterate. The difference between good and remarkable lives in the details most people never notice.",
     "ct-pre": "Let's build something together",
+    "ct-form-email": "Email",
+    "ct-form-message": "Message",
+    "ct-form-btn": "Send",
+    "ct-form-sent": "✓ Sent!",
+    "ct-form-error": "Error, try again",
+    "ct-form-sending": "...",
   },
   fr: {
     "hero-tag": "Développeur Frontend  Artiste 3D  Graphiste",
@@ -200,7 +204,7 @@ const T = {
     "a-p1":
       "Je suis Djamel, développeur frontend basé en Algérie. Mon parcours hybride  artiste 3D, graphiste, puis développeur  me permet de penser visuellement et d'exécuter techniquement.",
     "a-p2":
-      "Je conçois des expériences web où chaque pixel est intentionnel, chaque animation signifiante, chaque interface raconte quelque chose.",
+      "Je conçois des expériences web où chaque pixel est intentionnel, chaque animation signifiante, chaque interface raconte une histoire.",
     "pr-d1":
       "Immersion dans le brief. Contexte, contraintes, audience. Aucun pixel avant que l'idée soit claire.",
     "pr-d2":
@@ -210,11 +214,17 @@ const T = {
     "pr-d4":
       "Polissage, test, itération. La différence entre bon et remarquable réside dans les détails que la plupart ne remarquent jamais.",
     "ct-pre": "Construisons quelque chose ensemble",
+    "ct-form-email": "Email",
+    "ct-form-message": "Message",
+    "ct-form-btn": "Envoyer",
+    "ct-form-sent": "✓ Envoyé !",
+    "ct-form-error": "Erreur, réessaye",
+    "ct-form-sending": "...",
   },
   ja: {
     "hero-tag": "フロントエンド開発者  3Dアーティスト  グラフィックデザイナー",
     "hero-desc":
-      "3Dアーティストの目とグラフィックデザイナーの精度を持つフロントエンド開発者。コードとアートが交わるインターフェースを構築します。",
+      "3Dアーティストの目とグラフィックデザイナーの精度を持つフロントエンド開発者。コードとクラフトが交わるインターフェースを構築します。",
     "hero-scroll-lbl": "スクロール",
     "nl-about": "について",
     "nl-skills": "スキル",
@@ -227,7 +237,7 @@ const T = {
     "a-label": "01  について",
     "a-head": "コード.<br>アート.<br>精度.",
     "a-p1":
-      "アルジェリアを拠点とするフロントエンド開発者、ジャメルです。3Dアーティスト、グラフィックデザイナー、そして開発者というハイブリッドな経歴が、視覚的思考と技術的実行を可能にします。",
+      "私はジャメルです。アルジェリアを拠点とするフロントエンド開発者です。3Dアーティスト、グラフィックデザイナー、そして開発者というハイブリッドな経歴が、視覚的に考え、技術的に実行することを可能にします。",
     "a-p2":
       "すべてのピクセルに意図があり、すべてのアニメーションに意味があり、すべてのインターフェースが物語を語るウェブ体験を設計します。",
     "pr-d1":
@@ -235,13 +245,22 @@ const T = {
     "pr-d2":
       "スケッチ、ワイヤーフレーム、3ds Maxでの3Dブロックアウト。最初のコードの前にビジュアル言語を定義する。",
     "pr-d3":
-      "クリーンで意味のあるコード。GSAPでコレオグラフされたアニメーション。すべてのインタラクションを深く考慮する。",
+      "クリーンで意味のあるコード。GSAPでコレオグラフされたアニメーション。すべてのインタラクションを考慮し、すべてのトランジションを大切に。",
     "pr-d4":
       "磨き、テスト、反復。良いものと卓越したものの違いは、ほとんどの人が気づかない細部にある。",
     "ct-pre": "一緒に何か作りましょう",
+    "ct-form-email": "メール",
+    "ct-form-message": "メッセージ",
+    "ct-form-btn": "送信",
+    "ct-form-sent": "✓ 送信完了！",
+    "ct-form-error": "エラー、再試行してください",
+    "ct-form-sending": "...",
   },
 };
+
 let lang = "en";
+let formSending = false;
+
 function setLang(l) {
   lang = l;
   ["en", "fr", "ja"].forEach((x) => {
@@ -252,6 +271,7 @@ function setLang(l) {
   });
   const d = T[l];
   for (const [id, val] of Object.entries(d)) {
+    if (id === "ct-form-btn" && formSending) continue;
     const el = document.getElementById(id);
     if (el) el.innerHTML = val;
   }
@@ -260,11 +280,13 @@ function setLang(l) {
   mmLinks.forEach((link, i) => {
     link.textContent = d[keys[i]];
   });
+
   const hd = document.getElementById("hero-desc");
   hd.style.fontFamily =
     l === "ja" ? "'Noto Sans JP',sans-serif" : "'Syne',sans-serif";
   hd.style.fontWeight = l === "ja" ? "300" : "400";
   hd.style.fontSize = l === "ja" ? ".82rem" : ".94rem";
+
   ["pr-d1", "pr-d2", "pr-d3", "pr-d4"].forEach((id) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -272,6 +294,7 @@ function setLang(l) {
       l === "ja" ? "'Noto Sans JP',sans-serif" : "'DM Mono',monospace";
     el.style.fontSize = l === "ja" ? ".72rem" : ".65rem";
   });
+
   const ah = document.getElementById("a-head");
   ah.style.fontFamily =
     l === "ja" ? "'Noto Sans JP',sans-serif" : "'Bebas Neue',sans-serif";
@@ -279,16 +302,56 @@ function setLang(l) {
     l === "ja" ? "clamp(1.8rem,4vw,3.5rem)" : "clamp(2.5rem,5vw,5rem)";
 }
 
+/* ── SOUND ──────────────────────────────────────────── */
 function toggleSound() {
   const video = document.getElementById("about-video");
   const waves = document.getElementById("sound-waves");
   video.muted = !video.muted;
   if (video.muted) {
-    waves.setAttribute("d", "M23 9l-6 6M17 9l6 6"); // X sur les ondes
+    waves.setAttribute("d", "M23 9l-6 6M17 9l6 6");
   } else {
     waves.setAttribute(
       "d",
       "M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14",
     );
   }
+}
+
+/* ── CONTACT FORM ───────────────────────────────────── */
+const ctForm = document.getElementById("ct-form");
+if (ctForm) {
+  ctForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = ctForm.querySelector(".ct-btn");
+    const btnText = document.getElementById("ct-form-btn");
+
+    formSending = true;
+    btnText.textContent = T[lang]["ct-form-sending"];
+    btn.disabled = true;
+
+    try {
+      const res = await fetch("https://formspree.io/f/xkoprrej", {
+        method: "POST",
+        body: new FormData(ctForm),
+        headers: { Accept: "application/json" },
+      });
+
+      if (res.ok) {
+        ctForm.reset();
+        btnText.textContent = T[lang]["ct-form-sent"];
+      } else {
+        btnText.textContent = T[lang]["ct-form-error"];
+        btn.disabled = false;
+      }
+    } catch {
+      btnText.textContent = T[lang]["ct-form-error"];
+      btn.disabled = false;
+    }
+
+    setTimeout(() => {
+      formSending = false;
+      btn.disabled = false;
+      btnText.textContent = T[lang]["ct-form-btn"];
+    }, 3000);
+  });
 }

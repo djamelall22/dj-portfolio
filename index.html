@@ -358,6 +358,44 @@
             >makdjamel.contact<br />@gmail.com</a
           >
         </div>
+        <form
+          class="ct-form reveal"
+          style="transition-delay: 0.1s"
+          id="ct-form"
+        >
+          <div class="ct-field">
+            <input
+              type="email"
+              name="email"
+              id="ct-input-email"
+              placeholder=" "
+              required
+            />
+            <label for="ct-input-email" id="ct-form-email">Email</label>
+          </div>
+          <div class="ct-field">
+            <textarea
+              name="message"
+              id="ct-input-message"
+              placeholder=" "
+              rows="4"
+              required
+            ></textarea>
+            <label for="ct-input-message" id="ct-form-message">Message</label>
+          </div>
+          <button type="submit" class="ct-btn">
+            <span id="ct-form-btn">Envoyer</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path
+                d="M1 7h12M7 1l6 6-6 6"
+                stroke="currentColor"
+                stroke-width="1.2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </form>
+
         <ul class="ct-social reveal" style="transition-delay: 0.2s">
           <!-- <li><a href="#">GitHub</a></li> -->
           <!-- <li><a href="#">LinkedIn</a></li> -->
@@ -381,5 +419,6 @@
       <span>Algeria · الجزائر</span>
     </footer>
     <script src="index.js"></script>
+    <script src="chat-widget.js"></script>
   </body>
 </html>
