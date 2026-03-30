@@ -5,6 +5,7 @@ exports.handler = async function (event) {
 
   try {
     const { messages, system } = JSON.parse(event.body);
+    console.log("Key used:", process.env.GROQ_API_KEY?.substring(0, 10));
 
     const groqMessages = [{ role: "system", content: system }, ...messages];
 
