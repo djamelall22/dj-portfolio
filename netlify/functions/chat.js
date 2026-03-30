@@ -6,35 +6,30 @@ exports.handler = async function (event) {
   try {
     const { messages, system } = JSON.parse(event.body);
 
-    // Build Gemini contents array from conversation history
-    const contents = messages.map((msg) => ({
-      role: msg.role === "assistant" ? "model" : "user",
-      parts: [{ text: msg.content }],
-    }));
+    const groqMessages = [{ role: "system", content: system }, ...messages];
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+        },
         body: JSON.stringify({
-          system_instruction: {
-            parts: [{ text: system }],
-          },
-          contents,
-          generationConfig: {
-            maxOutputTokens: 1000,
-            temperature: 0.7,
-          },
+          model: "llama-3.1-8b-instant",
+          messages: groqMessages,
+          max_tokens: 1000,
+          temperature: 0.7,
         }),
       },
     );
 
     const data = await response.json();
-    console.log("Gemini response:", JSON.stringify(data));
+    console.log("Groq response:", JSON.stringify(data));
 
     const reply =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      data?.choices?.[0]?.message?.content ||
       "Sorry, I couldn't get a response. Please try again.";
 
     return {
@@ -46,7 +41,7 @@ exports.handler = async function (event) {
       body: JSON.stringify({ reply }),
     };
   } catch (err) {
-    console.error(err);
+    console.error("Error:", err);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: "Internal server error" }),
